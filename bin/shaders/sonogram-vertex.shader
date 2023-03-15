@@ -80,5 +80,5 @@ void main()
     float hue = mod(hueStartAngle + ((newPosition.y / verticalScale) * intervalHue),360.0);
     // float s = mod(satStart + ((newPosition.y / verticalScale) * satFinish), 1.0);
     // float v = mod(valStart + ((newPosition.y / verticalScale) * valFinish), 1.0);
-    color = convertHSVToRGB(hue, 1.0, 1.0);
+    color = convertHSVToRGB(hue, satStart, valStart);
 }
