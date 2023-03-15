@@ -760,7 +760,7 @@ canvas {
 canvas {
     top: 0;
     left: 0;
-    height: calc(100% - 11.8rem)
+    /* height: calc(100%) */
 }
 
 #legend {

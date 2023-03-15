@@ -1633,7 +1633,6 @@ var params = new URLSearchParams(window.location.search)
                         n.stop(),
                         n.drawingMode = !1,
                         $(this).hasClass("selected") ? $(".music-box__buttons__button").removeClass("selected") : ($(".music-box__buttons__button").removeClass("selected"),
-                        $(this).addClass("selected"),
                         void 0 !== $(this).attr("data-mic") ? ($("#record").fadeIn().delay(2e3).fadeOut(),
                         n.live()) : void 0 !== $(this).attr("data-draw") ? (n.drawingMode = !0,
                         $("#drawAnywhere").fadeIn().delay(2e3).fadeOut()) : void 0 !== $(this).attr("data-src") && (n.loopChanged(!0),
@@ -1969,11 +1968,11 @@ var params = new URLSearchParams(window.location.search)
                     var e = $("#spectrogram")[0];
                     g.canvas = e,
                     e.width = $(window).width(),
-                    e.height = $(window).height();
-                    var t = $("#legend")[0];
-                    t.width = $(window).width(),
-                    t.height = $(window).height() - 158,
-                    g.drawLegend_()
+                    e.height = $(window).height()*(params.get('height')?parseFloat(params.get('height')):100)/100;
+                    // var t = $("#legend")[0];
+                    // t.width = $(window).width(),
+                    // t.height = $(window).height() - 158,
+                    // g.drawLegend_()
                 },
                 draw_: function() {
                     return g.isRendering ? (g.analyserView.doFrequencyAnalysis(),
