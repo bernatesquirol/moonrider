@@ -21,6 +21,12 @@ uniform sampler2D vertexFrequencyData;
 uniform float vertexYOffset;
 uniform mat4 worldViewProjection;
 uniform float verticalScale;
+uniform float hueStartAngle;
+uniform float hueFinishAngle;
+uniform float satStart;
+uniform float satFinish;
+uniform float valStart;
+uniform float valFinish;
 
 varying vec2 texCoord;
 varying vec3 color;
@@ -59,7 +65,9 @@ vec3 convertHSVToRGB(in float hue, in float saturation, in float lightness) {
 
   return hsv;
 }
-
+float module(in float x, in float y){
+  return x - y * (x/y);
+}
 
 void main()
 {
@@ -68,7 +76,9 @@ void main()
     vec4 newPosition = vec4(gPosition.x, gPosition.y + verticalScale * sample.a, gPosition.z, 1.0);
     gl_Position = worldViewProjection * newPosition;
     texCoord = gTexCoord0;
-
-    float hue = 360.0 - ((newPosition.y / verticalScale) * 360.0);
+    float intervalHue = hueFinishAngle - hueStartAngle;
+    float hue = mod(hueStartAngle + ((newPosition.y / verticalScale) * intervalHue),360.0);
+    // float s = mod(satStart + ((newPosition.y / verticalScale) * satFinish), 1.0);
+    // float v = mod(valStart + ((newPosition.y / verticalScale) * valFinish), 1.0);
     color = convertHSVToRGB(hue, 1.0, 1.0);
 }
