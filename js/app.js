@@ -48,7 +48,7 @@ var Simple1DNoise = function() {
     };
 };
 var noise = new Simple1DNoise()
-// noise.setAmplitude(2)
+noise.setAmplitude(2)
 // noise.setScale(2)
 var params = new URLSearchParams(window.location.search)
 var hueDeltaTime = (params.get("hueDeltaTime")?parseFloat(params.get("hueDeltaTime")):null)
@@ -62,7 +62,7 @@ if (hueDeltaTime && hueDeltaAngle){
     var interval = setInterval(()=>{
         let v = 1
         if (useNoise){
-            v = noise.getVal(time)
+            v = noise.getVal(time)-1
             // console.log(v)
             time += 1
         }
