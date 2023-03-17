@@ -66,6 +66,9 @@ if (hueDeltaTime && hueDeltaAngle){
             // console.log(v)
             time += 1
         }
+        if (time%1000==0){
+            console.log(hueStartAngle, 'currentangle')
+        }
         hueStartAngle += v*hueDeltaAngle
         hueFinishAngle += v*hueDeltaAngle
     }, hueDeltaTime);
