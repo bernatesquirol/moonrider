@@ -63,12 +63,12 @@ if (hueDeltaTime && hueDeltaAngle){
         let v = 1
         if (useNoise){
             v = noise.getVal(time)-1
-            // console.log(v)
+            if (time%1000==0){
+                console.log(hueStartAngle, 'currentangle')
+            }
             time += 1
         }
-        if (time%1000==0){
-            console.log(hueStartAngle, 'currentangle')
-        }
+        
         hueStartAngle += v*hueDeltaAngle
         hueFinishAngle += v*hueDeltaAngle
     }, hueDeltaTime);
