@@ -1,4 +1,75 @@
+var Simple1DNoise = function() {
+    var MAX_VERTICES = 256;
+    var MAX_VERTICES_MASK = MAX_VERTICES -1;
+    var amplitude = 1;
+    var scale = 1;
+
+    var r = [];
+
+    for ( var i = 0; i < MAX_VERTICES; ++i ) {
+        r.push(Math.random());
+    }
+
+    var getVal = function( x ){
+        var scaledX = x * scale;
+        var xFloor = Math.floor(scaledX);
+        var t = scaledX - xFloor;
+        var tRemapSmoothstep = t * t * ( 3 - 2 * t );
+
+        /// Modulo using &
+        var xMin = xFloor & MAX_VERTICES_MASK;
+        var xMax = ( xMin + 1 ) & MAX_VERTICES_MASK;
+
+        var y = lerp( r[ xMin ], r[ xMax ], tRemapSmoothstep );
+
+        return y * amplitude;
+    };
+
+    /**
+     * Linear interpolation function.
+     * @param a The lower integer value
+     * @param b The upper integer value
+     * @param t The value between the two
+     * @returns {number}
+     */
+    var lerp = function(a, b, t ) {
+        return a * ( 1 - t ) + b * t;
+    };
+
+    // return the API
+    return {
+        getVal: getVal,
+        setAmplitude: function(newAmplitude) {
+            amplitude = newAmplitude;
+        },
+        setScale: function(newScale) {
+            scale = newScale;
+        }
+    };
+};
+var noise = new Simple1DNoise()
+// noise.setAmplitude(2)
+// noise.setScale(2)
 var params = new URLSearchParams(window.location.search)
+var hueDeltaTime = (params.get("hueDeltaTime")?parseFloat(params.get("hueDeltaTime")):null)
+var hueDeltaAngle = (params.get("hueDeltaAngle")?parseFloat(params.get("hueDeltaAngle")):null)
+var useNoise = (params.get("useNoise")?params.get("useNoise")=='true':null)
+globalThis.hueStartAngle = (params.get("hueStartAngle")?parseFloat(params.get("hueStartAngle")):360)
+globalThis.hueFinishAngle = (params.get("hueFinishAngle")?parseFloat(params.get("hueFinishAngle")):0)
+var time = 0
+if (hueDeltaTime && hueDeltaAngle){
+    console.log(hueDeltaTime, hueDeltaAngle, 'changing!')
+    var interval = setInterval(()=>{
+        let v = 1
+        if (useNoise){
+            v = noise.getVal(time)
+            // console.log(v)
+            time += 1
+        }
+        hueStartAngle += v*hueDeltaAngle
+        hueFinishAngle += v*hueDeltaAngle
+    }, hueDeltaTime);
+}
 !function e(t, n, i) {
     function r(o, a) {
         if (!n[o]) {
@@ -1464,8 +1535,8 @@ var params = new URLSearchParams(window.location.search)
                     var U = Math.floor(D * (l - 1)) / (l - 1);
                     t.uniform1f(T.vertexYOffsetLoc, U),
                     t.uniform1f(T.verticalScaleLoc, o / 3.5),
-                    t.uniform1f(T.hueStartAngleLoc, params.get("hueStartAngle")?parseFloat(params.get("hueStartAngle")):360),
-                    t.uniform1f(T.hueFinishAngleLoc, params.get("hueFinishAngle")?parseFloat(params.get("hueFinishAngle")):0),
+                    t.uniform1f(T.hueStartAngleLoc, globalThis.hueStartAngle),
+                    t.uniform1f(T.hueFinishAngleLoc, globalThis.hueFinishAngle),
                     t.uniform1f(T.satStartLoc, params.get("satStart")?parseFloat(params.get("satStart")):1),
                     t.uniform1f(T.satFinishLoc, params.get("satFinish")?parseFloat(params.get("satFinish")):1),
                     t.uniform1f(T.valStartLoc, params.get("valStart")?parseFloat(params.get("valStart")):1),
